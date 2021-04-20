@@ -1,0 +1,75 @@
+service: cloud-responder # NOTE: update this with your service name
+
+# You can pin your service to only deploy with a specific Serverless version
+# Check out our docs for more details
+# frameworkVersion: "=X.X.X"
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  environment:
+    SLACK_WEBHOOK_URL: https://hooks.slack.com/services/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
+
+# you can overwrite defaults here
+#  stage: dev
+#  region: us-east-1
+
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - iam:DeleteUser
+        - iam:ListAccessKeys
+        - iam:DeleteAccessKey
+        - iam:GetLoginProfile
+        - iam:GetUser
+        - iam:DeleteLoginProfile
+      Resource: "*"
+    - Effect: Allow
+      Action:
+        - ec2:DescribeInstanceStatus
+        - ec2:DescribeInstances
+        - ec2:TerminateInstances
+      Resource: "*"
+
+# you can define service wide environment variables here
+#  environment:
+#    variable1: value1
+
+# you can add packaging information here
+#package:
+#  include:
+#    - include-me.js
+#    - include-me-dir/**
+#  exclude:
+#    - exclude-me.js
+#    - exclude-me-dir/**
+
+functions:
+  eventHandler:
+    handler: serverless.handler
+    timeout: 900
+    events:
+      - eventBridge:
+          pattern:
+            source:
+              - "anything-but": "aws.kms"
+              # - aws.iam
+            account:
+              - !Ref AWS::AccountId
+              # - !Ref ${AWS::AccountId}
+
+
+#    environment:
+#      variable2: value2
+
+# you can add CloudFormation resource templates here
+#resources:
+#  Resources:
+#    NewResource:
+#      Type: AWS::S3::Bucket
+#      Properties:
+#        BucketName: my-new-bucket
+#  Outputs:
+#     NewOutput:
+#       Description: "Description for the output"
+#       Value: "Some output value"
