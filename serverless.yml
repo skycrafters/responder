@@ -1,0 +1,75 @@
+***REMOVED*** # NOTE: update this with your service name
+
+# You can pin your service to only deploy with a specific Serverless version
+# Check out our docs for more details
+# frameworkVersion: "=X.X.X"
+
+***REMOVED***
+***REMOVED***
+  runtime: nodejs12.x
+  environment:
+    SLACK_WEBHOOK_URL: https://hooks.slack.com/services/***REMOVED***
+
+# you can overwrite defaults here
+#***REMOVED***
+#  region: us-east-1
+
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - iam:DeleteUser
+        - iam:ListAccessKeys
+        - iam:DeleteAccessKey
+        - iam:GetLoginProfile
+        - iam:GetUser
+        - iam:DeleteLoginProfile
+      Resource: "*"
+    - Effect: Allow
+      Action:
+        - ec2:DescribeInstanceStatus
+        - ec2:DescribeInstances
+        - ec2:TerminateInstances
+      Resource: "*"
+
+# you can define service wide environment variables here
+#  environment:
+#    variable1: value1
+
+# you can add packaging information here
+#package:
+#  include:
+#    - include-me.js
+#    - include-me-dir/**
+#  exclude:
+#    - exclude-me.js
+#    - exclude-me-dir/**
+
+***REMOVED***
+  eventHandler:
+    handler: serverless.handler
+***REMOVED***
+***REMOVED***
+      - eventBridge:
+          pattern:
+            source:
+              - "anything-but": "aws.kms"
+              # - aws.iam
+            account:
+              - !Ref AWS::AccountId
+              # - !Ref ${AWS::AccountId}
+
+
+#    environment:
+#      variable2: value2
+
+# you can add CloudFormation resource templates here
+#***REMOVED***
+#  Resources:
+#    NewResource:
+#      Type: AWS::S3::Bucket
+#      Properties:
+#        BucketName: my-new-bucket
+#  Outputs:
+#     NewOutput:
+#       Description: "Description for the output"
+#       Value: "Some output value"

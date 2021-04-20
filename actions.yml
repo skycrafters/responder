@@ -1,0 +1,103 @@
+flows:
+  - rule: NonCompliantUserCreated
+    enabled: false
+    sequential:
+      - command: SendSlack
+        message:
+          values:
+            - label: "Created username"
+              value: "$.event.detail.requestParameters.userName"
+            - label: "IP address"
+              value: "$.event.detail.sourceIPAddress"
+            - label: "Initiating user"
+              value: "$.event.detail.userIdentity.userName"
+      - command: SendEmail
+        recipients: raph@skycrafters.io, xabi_errotabehere@trendmicro.com
+        subject: "Non-compliant user created: %s"
+        body: "Non-compliant user created, find details below \n %s"
+      - command: Wait
+        duration: 10
+      - rule: check
+      - command: SendSlack
+        message:
+          header: "Will remove non-compliant user"
+          values:
+            - label: "Removing username"
+              value: "$.event.detail.requestParameters.userName"
+      - rule: remediate
+      - command: SendSlack
+        message: "Non-compliant user removed"
+
+  - rule: UnauthorizedInstanceCreated
+    sequential:
+      - command: SendSlack
+        message:
+          values:
+            - label: "Created instances"
+              value: "$.event.detail.responseElements.instancesSet.items[*].instanceId"
+            - label: "IP address"
+              value: "$.event.detail.sourceIPAddress"
+            - label: "Initiating user"
+              value: "$.event.detail.userIdentity.userName"
+      - command: Wait
+        duration: 100
+      - rule: check
+      - command: SendSlack
+        message: "Will terminate instances"
+      - rule: remediate
+
+  - rule: SuspiciousLoginHour
+    parallel:
+      - command: SendSlack
+        message:
+          values:
+            - label: "Account"
+              value: "$.event.account"
+            - label: "Username"
+              value: "$.event.detail.userIdentity.principalId"
+            - label: "IP address"
+              value: "$.event.detail.sourceIPAddress"
+      - command: SendEmail
+        recipients: raph@skycrafters.io, xabi_errotabehere@trendmicro.com
+        subject: "Suspicious login detected: %s"
+        body: "Suspicious login detected, find details below"
+      - command: SendPagerDuty
+
+  - rule: SuspiciousLoginIP
+    enabled: false
+    parallel:
+      - command: SendSlack
+        message:
+          values:
+            - label: "Account"
+              value: "$.event.account"
+            - label: "Username"
+              value: "$.event.detail.userIdentity.principalId"
+            - label: "IP address"
+              value: "$.event.detail.sourceIPAddress"
+      - command: SendEmail
+        recipients: raph@skycrafters.io, xabi_errotabehere@trendmicro.com
+        subject: "Suspicious login detected: %s"
+        body: "Suspicious login detected, find details below \n %s"
+      - command: SendPagerDuty
+
+  - rule: RootLogin
+    enabled: false
+    parallel:
+      - command: SendSlack
+        message:
+          header: ":bomb: Root has logged in"
+          values:
+            - label: "Account"
+              value: "$.event.account"
+            - label: "IP address"
+              value: "$.event.detail.sourceIPAddress"
+      - command: SendEmail
+        recipients: raph@skycrafters.io, xabi_errotabehere@trendmicro.com
+        subject: "Suspicious login detected: %s"
+        body: "Suspicious login detected, find details below \n %s"
+      - command: SendPagerDuty
+
+
+  # - rule: "@skycrafters/instanceCreated"
+  #   instanceType: "t2.micro"
