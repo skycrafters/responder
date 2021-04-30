@@ -7,11 +7,10 @@ const flows = yaml
 	.load(fs.readFileSync("./actions.yml", "utf8"))
 	.flows.map((flow) => {
 		return {
-			// machine: machine.create(flow),
 			rule: flow,
 		};
 	})
-	.filter((flow) => flow.enabled !== false);
+	.filter((flow) => flow.rule.enabled !== false);
 
 const processEvent = (event) => {
 	return Promise.map(flows, (flow) => {

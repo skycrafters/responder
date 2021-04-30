@@ -1,0 +1,64 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: A template to deploy the EventBridge rules in a specific region with the Cloud Responder endpoint as a target
+
+Parameters:
+  TargetEndpoint:
+    Type: String
+
+Resources:
+  CloudResponderAPIConnection:
+    Type: AWS::Events::Connection
+    Properties:
+      Name: CloudResponderAPIConnection
+      AuthorizationType: API_KEY
+      AuthParameters:
+          ApiKeyAuthParameters:
+              ApiKeyName: APIKey
+              ApiKeyValue: "{{resolve:secretsmanager:CloudResponderSecret}}"
+
+  CloudResponderAPIDestination:
+    Type: AWS::Events::ApiDestination
+    Properties:
+      Name: CloudResponderAPIDestination
+      ConnectionArn: !GetAtt CloudResponderAPIConnection.Arn
+      InvocationEndpoint: !Ref TargetEndpoint
+      HttpMethod: POST
+      InvocationRateLimitPerSecond: 20
+
+  CloudResponderAPIDestinationDeliveryRule:
+      Type: AWS::Events::Rule
+      Properties:
+        Name: SendEventsToApiDestinations
+        EventPattern:
+          source:
+            - "anything-but": ["aws.kms", "aws.logs"]
+          # account:
+          #   - !Ref AWS::AccountId
+        State: "ENABLED"
+        Targets:
+          - Id: APIDestination
+            Arn: !GetAtt CloudResponderAPIDestination.Arn
+            RoleArn: !GetAtt CloudResponderAPIDestinationsTargetRole.Arn
+
+  CloudResponderAPIDestinationsTargetRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: !Sub 'CloudResponderAPIDestinationsTargetRole-${AWS::Region}'
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: events.amazonaws.com
+            Action: 'sts:AssumeRole'
+      Policies:
+          - PolicyName: AllowAPIDestinationsInvoke
+            PolicyDocument:
+              Version: '2012-10-17'
+              Statement:
+                - Sid: InvokeAPIDestination
+                  Effect: Allow
+                  Action:
+                    - events:InvokeApiDestination
+                  Resource:
+                    - !GetAtt CloudResponderAPIDestination.Arn
