@@ -4,7 +4,9 @@
   "description": "",
   "main": "handler.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "deploy": "node serverless-deploy.js",
+    "remove": "node serverless-remove.js"
   },
   "repository": {
     "type": "git",
@@ -18,16 +20,16 @@
   "homepage": "https://github.com/cloudone-community/cloud-responder#readme",
   "dependencies": {
     "@slack/webhook": "^5.0.3",
-    "aws-sdk": "^2.805.0",
     "bluebird": "^3.7.2",
     "ip-range-check": "^0.2.0",
     "js-yaml": "^4.0.0",
     "jsonpath-plus": "^5.0.4",
-    "moment-timezone": "^0.5.33",
-    "serverless": "^2.31.0",
-    "slack": "^11.0.2"
+    "moment-timezone": "^0.5.33"
   },
   "devDependencies": {
+    "slack": "^11.0.2",
+    "serverless": "^2.31.0",
+    "aws-sdk": "^2.805.0",
     "@babel/cli": "^7.12.10",
     "@babel/core": "^7.12.10",
     "@babel/plugin-transform-modules-commonjs": "^7.12.1",

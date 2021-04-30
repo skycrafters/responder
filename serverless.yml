@@ -1,75 +1,67 @@
-***REMOVED*** # NOTE: update this with your service name
-
-# You can pin your service to only deploy with a specific Serverless version
-# Check out our docs for more details
-# frameworkVersion: "=X.X.X"
+***REMOVED***
+***REMOVED***
+***REMOVED***
+***REMOVED***
 
 ***REMOVED***
 ***REMOVED***
-  runtime: nodejs12.x
+***REMOVED***
+***REMOVED***
+***REMOVED***
+***REMOVED***
+***REMOVED***
+***REMOVED***
   environment:
-    SLACK_WEBHOOK_URL: https://hooks.slack.com/services/***REMOVED***
+    SLACK_WEBHOOK_URL: https://hooks.slack.com/services/XXXXXXXX/B01H47M6W1E/ofbkuZIVooitaSnZmSmWMcwn
 
-# you can overwrite defaults here
-#***REMOVED***
-#  region: us-east-1
-
-  iamRoleStatements:
-    - Effect: Allow
-      Action:
-        - iam:DeleteUser
-        - iam:ListAccessKeys
-        - iam:DeleteAccessKey
-        - iam:GetLoginProfile
-        - iam:GetUser
-        - iam:DeleteLoginProfile
-      Resource: "*"
-    - Effect: Allow
-      Action:
-        - ec2:DescribeInstanceStatus
-        - ec2:DescribeInstances
-        - ec2:TerminateInstances
-      Resource: "*"
-
-# you can define service wide environment variables here
-#  environment:
-#    variable1: value1
-
-# you can add packaging information here
-#package:
-#  include:
-#    - include-me.js
-#    - include-me-dir/**
-#  exclude:
-#    - exclude-me.js
-#    - exclude-me-dir/**
+  iam:
+   role:
+    statements:
+      - Effect: Allow
+        Action:
+          - secretsmanager:GetSecretValue
+        # Resource: !Sub 'arn:aws:sns:${AWS::Region}:${AWS::AccountId}:dispatch'
+        Resource: !Sub 'arn:aws:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:CloudResponderSecret*'
+      - Effect: Allow
+        Action:
+          - sns:Publish
+        # Resource: arn:aws:sns:${self:provider.region}:*:dispatch
+        Resource: !Sub 'arn:aws:sns:${AWS::Region}:${AWS::AccountId}:dispatch'
+      - Effect: Allow
+        Action:
+          - iam:DeleteUser
+          - iam:ListAccessKeys
+          - iam:DeleteAccessKey
+          - iam:GetLoginProfile
+          - iam:GetUser
+          - iam:DeleteLoginProfile
+        Resource: "*"
+      - Effect: Allow
+        Action:
+          - ec2:DescribeInstanceStatus
+          - ec2:DescribeInstances
+          - ec2:TerminateInstances
+        Resource: "*"
 
 ***REMOVED***
-  eventHandler:
-    handler: serverless.handler
 ***REMOVED***
 ***REMOVED***
-      - eventBridge:
-          pattern:
-            source:
-              - "anything-but": "aws.kms"
-              # - aws.iam
-            account:
-              - !Ref AWS::AccountId
-              # - !Ref ${AWS::AccountId}
+***REMOVED***
+***REMOVED***
+***REMOVED***
+***REMOVED***
+***REMOVED***
+***REMOVED***
+***REMOVED***
+***REMOVED***
+        ***REMOVED***
+***REMOVED***
+***REMOVED***
+***REMOVED***
 
+***REMOVED***
+***REMOVED***
+***REMOVED***
+***REMOVED***
+***REMOVED***
 
-#    environment:
-#      variable2: value2
-
-# you can add CloudFormation resource templates here
-#***REMOVED***
-#  Resources:
-#    NewResource:
-#      Type: AWS::S3::Bucket
-#      Properties:
-#        BucketName: my-new-bucket
-#  Outputs:
-#     NewOutput:
-#       Description: "Description for the output"
-#       Value: "Some output value"

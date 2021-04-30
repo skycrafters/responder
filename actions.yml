@@ -1,6 +1,6 @@
 flows:
   - rule: NonCompliantUserCreated
-    enabled: false
+    enabled: true
     sequential:
       - command: SendSlack
         message:
@@ -40,7 +40,7 @@ flows:
             - label: "Initiating user"
               value: "$.event.detail.userIdentity.userName"
       - command: Wait
-        duration: 100
+        duration: 120
       - rule: check
       - command: SendSlack
         message: "Will terminate instances"
@@ -64,7 +64,7 @@ flows:
       - command: SendPagerDuty
 
   - rule: SuspiciousLoginIP
-    enabled: false
+    enabled: true
     parallel:
       - command: SendSlack
         message:
@@ -82,7 +82,7 @@ flows:
       - command: SendPagerDuty
 
   - rule: RootLogin
-    enabled: false
+    enabled: true
     parallel:
       - command: SendSlack
         message:
@@ -99,5 +99,5 @@ flows:
       - command: SendPagerDuty
 
 
-  # - rule: "@skycrafters/instanceCreated"
+  # - rule: "@raphbot/instanceCreated"
   #   instanceType: "t2.micro"
