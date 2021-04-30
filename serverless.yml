@@ -12,7 +12,7 @@
 ***REMOVED***
 ***REMOVED***
   environment:
-    SLACK_WEBHOOK_URL: https://hooks.slack.com/services/XXXXXXXX/B01H47M6W1E/ofbkuZIVooitaSnZmSmWMcwn
+    SLACK_WEBHOOK_URL: https://hooks.slack.com/services/***REMOVED***
 
   iam:
    role:
@@ -20,12 +20,10 @@
       - Effect: Allow
         Action:
           - secretsmanager:GetSecretValue
-        # Resource: !Sub 'arn:aws:sns:${AWS::Region}:${AWS::AccountId}:dispatch'
         Resource: !Sub 'arn:aws:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:CloudResponderSecret*'
       - Effect: Allow
         Action:
           - sns:Publish
-        # Resource: arn:aws:sns:${self:provider.region}:*:dispatch
         Resource: !Sub 'arn:aws:sns:${AWS::Region}:${AWS::AccountId}:dispatch'
       - Effect: Allow
         Action:
