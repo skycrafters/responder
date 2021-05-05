@@ -1,9 +1,0 @@
-whiteListedInstances:
-  - t3a\.(.*)
-  - c6g.medium
-blackListedInstances:
-  - t2\.(.*)
-  - (.*)\.8xlarge
-  - (.*)\.12xlarge
-  - (.*)\.16xlarge
-  - (.*)\.24xlarge

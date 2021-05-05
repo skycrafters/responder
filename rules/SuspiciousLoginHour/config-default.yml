@@ -1,0 +1,16 @@
+# Create a config.yml next to this file to configure this rule
+name: Log in outside of working hours
+trigger:
+  - path: $.source
+    value: aws.signin
+  - path: $.detail.eventName
+    value: ConsoleLogin
+severity: MEDIUM
+operatingHours:
+  timeZone: America/Barbados
+  week:
+    from: 8:00AM
+    to: 3:00PM
+  weekend:
+    from: 02:00PM
+    to: 04:00PM

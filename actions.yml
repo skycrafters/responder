@@ -12,9 +12,6 @@ flows:
             - label: "Initiating user"
               value: "$.event.detail.userIdentity.userName"
       - command: SendEmail
-        recipients: raph@skycrafters.io, xabi_errotabehere@trendmicro.com
-        subject: "Non-compliant user created: %s"
-        body: "Non-compliant user created, find details below \n %s"
       - command: Wait
         duration: 10
       - rule: check
@@ -39,6 +36,7 @@ flows:
               value: "$.event.detail.sourceIPAddress"
             - label: "Initiating user"
               value: "$.event.detail.userIdentity.userName"
+      - command: SendEmail
       - command: Wait
         duration: 120
       - rule: check
@@ -58,10 +56,6 @@ flows:
             - label: "IP address"
               value: "$.event.detail.sourceIPAddress"
       - command: SendEmail
-        recipients: raph@skycrafters.io, xabi_errotabehere@trendmicro.com
-        subject: "Suspicious login detected: %s"
-        body: "Suspicious login detected, find details below"
-      - command: SendPagerDuty
 
   - rule: SuspiciousLoginIP
     enabled: true
@@ -76,10 +70,6 @@ flows:
             - label: "IP address"
               value: "$.event.detail.sourceIPAddress"
       - command: SendEmail
-        recipients: raph@skycrafters.io, xabi_errotabehere@trendmicro.com
-        subject: "Suspicious login detected: %s"
-        body: "Suspicious login detected, find details below \n %s"
-      - command: SendPagerDuty
 
   - rule: RootLogin
     enabled: true
@@ -93,10 +83,7 @@ flows:
             - label: "IP address"
               value: "$.event.detail.sourceIPAddress"
       - command: SendEmail
-        recipients: raph@skycrafters.io, xabi_errotabehere@trendmicro.com
-        subject: "Suspicious login detected: %s"
-        body: "Suspicious login detected, find details below \n %s"
-      - command: SendPagerDuty
+        subject: "Root has logged in!"
 
 
   # - rule: "@raphbot/instanceCreated"

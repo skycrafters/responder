@@ -4,12 +4,15 @@ Description: A template to deploy the EventBridge rules in a specific region wit
 Parameters:
   TargetEndpoint:
     Type: String
+  ForceUpdateToken:
+    Type: String
 
 Resources:
   CloudResponderAPIConnection:
     Type: AWS::Events::Connection
     Properties:
       Name: CloudResponderAPIConnection
+      Description: !Join [ " - ", ["Authenticated API connecction for the Cloud Responder", !Ref ForceUpdateToken]]
       AuthorizationType: API_KEY
       AuthParameters:
           ApiKeyAuthParameters:

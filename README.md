@@ -61,18 +61,18 @@ This will:
 
 ### On AWS
 
-*The EventBridge Rules*
+*The EventBridge Rules*<br />
 On AWS, the installation creates a Rule on EventBridge. This rule capture CloudTrail events and send these events to a Target.
 The Target is an API Connection that sends the event to the Cloud Responder via a HTTP request.
 Because the EventBridge is region specific, it has to be done in every region.
 
-*The Serverless app*
+*The Serverless app*<br />
 The serverless app exposes a HTTP endpoint that will receive POST requests sent by the API Connections installed in all regions. The the KeyPOST requests are authenticated via an APIKey tha is shared between the API Connection and the Serverless HTTP endpoint (API Gateway). An Authorizer (Lambda function) will authenticate the request by checking the API Key. Once authenticated the detection/capture sequence can start.
 
 ### Anywhere
 
-*Detection/Capture sequence*
+*Detection/Capture sequence*<br />
 The capture sequence, is a rule that is going to be run again the incoming event. The rule checks if the event is of interest. The rule must return an array of findings if the the event is of interest. Returning one or more findings will start a flow sequence.
 
-*The flow sequence*
+*The flow sequence*<br />
 A flow sequence will start when a finding has been discoverd, it a series of actions that can be taken sequentially or in parallel.

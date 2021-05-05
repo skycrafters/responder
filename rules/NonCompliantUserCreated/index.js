@@ -2,37 +2,21 @@ Promise = require("bluebird");
 
 const AWS = require("aws-sdk");
 const IAM = new AWS.IAM();
-const yaml = require("js-yaml");
-const path = require("path");
-const fs = require("fs");
-const config = yaml.load(
-	fs.readFileSync(path.resolve(__dirname, "./config.yml"), "utf8")
-);
+
+const ruleUtils = require(`${__dirname}/../../lib/rule-utils.js`);
+const config = ruleUtils.getConfig(__dirname);
 
 module.exports = {
-	name: "Non-compliant user created",
 	capture: (event) => {
-		if (event.source !== "aws.iam") {
-			return [];
+		if (
+			event.detail.requestParameters &&
+			!event.detail.requestParameters.userName.match(config.userNamePattern)
+		) {
+			result.push({
+				message: `A user with username: ${event.detail.requestParameters.userName} has been created`,
+				userName: event.detail.requestParameters.userName,
+			});
 		}
-
-		let result = [];
-
-		if (event.detail.eventName === "CreateUser") {
-			if (
-				event.detail.requestParameters &&
-				!event.detail.requestParameters.userName.match(config.userNamePattern)
-			) {
-				result.push({
-					message:
-						"Suspicious activity detected, a user has been created against the naming convention",
-					severity: "EXTREME",
-					id: "BAD_USER_CREATED",
-					userName: event.detail.requestParameters.userName,
-				});
-			}
-		}
-
 		return result;
 	},
 	check: async (action, flow) => {
