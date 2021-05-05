@@ -8,16 +8,17 @@ const config = ruleUtils.getConfig(__dirname);
 
 module.exports = {
 	capture: (event) => {
+		let findings = [];
 		if (
 			event.detail.requestParameters &&
 			!event.detail.requestParameters.userName.match(config.userNamePattern)
 		) {
-			result.push({
+			findings.push({
 				message: `A user with username: ${event.detail.requestParameters.userName} has been created`,
 				userName: event.detail.requestParameters.userName,
 			});
 		}
-		return result;
+		return findings;
 	},
 	check: async (action, flow) => {
 		console.log("Checking non Non-compliant user");
