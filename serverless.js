@@ -7,18 +7,11 @@ const SecretsManager = new AWS.SecretsManager();
 const SSMSecretName = "CloudResponderSecret";
 
 exports.authorizer = async (event, context) => {
-
 	const key = await SecretsManager.getSecretValue({SecretId: SSMSecretName}).promise().then((data) => data.SecretString);
-
-	console.log(JSON.stringify(key, null, 2));
-	console.log(JSON.stringify(event, null, 2));
-	console.log(JSON.stringify(context, null, 2));
-
 	let effect = "Deny"
 	if (event.authorizationToken === key) {
 		effect = "Allow";
 	}
-
 	return {
 		principalId: "user",
 		policyDocument: {

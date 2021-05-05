@@ -12,7 +12,7 @@ provider:
   lambdaHashingVersion: 20201221
   region: ${opt:region, self:custom.defaultRegion}
   environment:
-    SLACK_WEBHOOK_URL: https://hooks.slack.com/services/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
+    EMAIL_TOPIC_ARN: !Ref "EmailTopic"
 
   iam:
    role:
@@ -20,11 +20,13 @@ provider:
       - Effect: Allow
         Action:
           - secretsmanager:GetSecretValue
-        Resource: !Sub 'arn:aws:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:CloudResponderSecret*'
+        Resource: !Sub "arn:aws:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:CloudResponderSecret*"
       - Effect: Allow
         Action:
           - sns:Publish
-        Resource: !Sub 'arn:aws:sns:${AWS::Region}:${AWS::AccountId}:dispatch'
+        Resource:
+          - !Sub "arn:aws:sns:${AWS::Region}:${AWS::AccountId}:dispatch"
+          - !Ref "EmailTopic"
       - Effect: Allow
         Action:
           - iam:DeleteUser
@@ -63,3 +65,18 @@ functions:
     events:
       - sns: dispatch
 
+resources:
+  Resources:
+    EmailTopic:
+      Type: AWS::SNS::Topic
+      Properties:
+        Subscription:
+          - Endpoint: "xabi@keinu.net"
+            Protocol: "email"
+        TopicName: "EmailTopic"
+      # EmailSubscription:
+      #   Type: AWS::SNS::Subscription
+      #   Properties:
+      #     Endpoint: xabi@keinu.net
+      #     Protocol: email
+      #     TopicArn: !Ref 'EmailTopic'

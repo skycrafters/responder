@@ -138,6 +138,10 @@ const deployEventBridgeRule = async (region, endpoint) => {
 					ParameterKey: "TargetEndpoint",
 					ParameterValue: endpoint,
 				},
+				{
+					ParameterKey: "ForceUpdateToken",
+					ParameterValue: Math.random().toString(36).substring(7),
+				},
 			],
 		})
 			.promise()
@@ -174,6 +178,10 @@ const deployEventBridgeRule = async (region, endpoint) => {
 				{
 					ParameterKey: "TargetEndpoint",
 					ParameterValue: endpoint,
+				},
+				{
+					ParameterKey: "ForceUpdateToken",
+					ParameterValue: Math.random().toString(36).substring(7),
 				}
 			],
 		})
@@ -197,8 +205,14 @@ const deployEventBridgeRule = async (region, endpoint) => {
 	const regions = await getRegions();
 
 	await createSecret(regions);
+
+	// recursively scan rules only select the enabled
+	// compile all the policies
+	// update the serverless yml with the policy
+
 	await deployServerless("us-east-1");
 	const endpoint = await getHTTPEndpoint();
+	// ----
 	await Promise.map(regions, (region) => {
 		return deployEventBridgeRule(region, endpoint);
 	});

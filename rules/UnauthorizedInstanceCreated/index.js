@@ -4,43 +4,25 @@ const AWS = require("aws-sdk");
 const EC2 = new AWS.EC2({
 	region: "us-east-1",
 });
-const yaml = require("js-yaml");
-const path = require("path");
-const fs = require("fs");
-const config = yaml.load(
-	fs.readFileSync(path.resolve(__dirname, "./config.yml"), "utf8")
-);
+
+const ruleUtils = require(`${__dirname}/../../lib/rule-utils.js`);
+const config = ruleUtils.getConfig(__dirname);
 
 module.exports = {
-	name: "Non-compliant user created",
 	capture: (event) => {
-		if (event.detail && event.source !== "aws.ec2") {
-			return [];
-		}
-
 		let findings = [];
-
-		if (event.detail.eventName === "RunInstances") {
-			console.log(JSON.stringify(event.detail, null, 2));
-
-			if (!isValid(event.detail.requestParameters.instanceType, config)) {
-				findings.push({
-					message: "Unauthorized instance has been launched",
-					severity: "HIGH",
-					id: "UNAUTHORIZED_INSTANCE_CREATED",
-					instanceType: event.detail.requestParameters.instanceType,
-					instanceIds: event.detail.responseElements.instancesSet.items.map(
-						(instance) => instance.instanceId
-					)
-				});
-			}
+		if (!isValid(event.detail.requestParameters.instanceType, config)) {
+			findings.push({
+				message: `Unauthorized [${event.detail.requestParameters.instanceType}] instance has been launched`,
+				instanceType: event.detail.requestParameters.instanceType,
+				instanceIds: event.detail.responseElements.instancesSet.items.map(
+					(instance) => instance.instanceId
+				)
+			});
 		}
-
 		return findings;
 	},
 	check: async (action, flow) => {
-		console.log("Checking running instances");
-		console.log(flow);
 		const finding = flow.findings.find(
 			(finding) => finding.ruleName === flow.rule.rule
 		);

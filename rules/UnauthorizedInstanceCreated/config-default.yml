@@ -1,0 +1,17 @@
+# Create a config.yml next to this file to configure this rule
+name: Non-compliant user created
+trigger:
+  - path: $.source
+    value: aws.ec2
+  - path: $.detail.eventName
+    value: RunInstances
+severity: HIGH
+whiteListedInstances:
+  - t3a\.(.*)
+  - c6g.medium
+blackListedInstances:
+  - t2\.(.*)
+  - (.*)\.8xlarge
+  - (.*)\.12xlarge
+  - (.*)\.16xlarge
+  - (.*)\.24xlarge

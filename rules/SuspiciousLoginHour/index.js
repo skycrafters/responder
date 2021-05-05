@@ -1,23 +1,11 @@
-const yaml = require("js-yaml");
-const path = require("path");
-const fs = require("fs");
 const moment = require("moment-timezone");
 const ipRangeCheck = require("ip-range-check");
-const config = yaml.load(
-	fs.readFileSync(path.resolve(__dirname, "./config.yml"), "utf8")
-);
+
+const ruleUtils = require(`${__dirname}/../../lib/rule-utils.js`);
+const config = ruleUtils.getConfig(__dirname);
 
 module.exports = {
-	name: "Login outside of work hours",
 	capture: (event) => {
-		if (event.source !== "aws.signin") {
-			return [];
-		}
-
-		if (event.detail.eventName !== "ConsoleLogin") {
-			return [];
-		}
-
 		let findings = [];
 
 		if (config.operatingHours && config.operatingHours.timeZone) {
@@ -45,9 +33,7 @@ module.exports = {
 					)
 				) {
 					findings.push({
-						message:
-							"Suspicious activity detected, user logged outside of standard working hours",
-						severity: "MEDIUM",
+						message: "User logged outside of standard working hours",
 					});
 				}
 			}
