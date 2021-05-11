@@ -1,0 +1,7 @@
+## Random channel
+webhookURL: "https://hooks.slack.com/services/T8ETS7H2N/B01T2S2039Q/123412341234"
+icons:
+  EXTREME: ":bomb:"
+  HIGH: ":warning:"
+  MEDIUM: ":small_red_triangle:"
+  LOW: ":eyes:"

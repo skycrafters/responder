@@ -1,7 +1,0 @@
-# #random channel
-webhookURL: "https://hooks.slack.com/services/***REMOVED***"
-icons:
-  EXTREME: ":bomb:"
-  HIGH: ":warning:"
-  MEDIUM: ":small_red_triangle:"
-  LOW: ":eyes:"

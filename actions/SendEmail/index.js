@@ -6,9 +6,8 @@ const AWS = require("aws-sdk");
 const SNS = new AWS.SNS({});
 const { JSONPath } = require("jsonpath-plus");
 
-const config = yaml.load(
-	fs.readFileSync(path.resolve(__dirname, "./config.yml"), "utf8")
-);
+const ruleUtils = require(`${process.cwd()}/lib/rule-utils.js`);
+const config = ruleUtils.getConfig(__dirname);
 
 module.exports = async (action, flow) => {
 

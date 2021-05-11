@@ -5,9 +5,8 @@ const path = require("path");
 const fs = require("fs");
 const { IncomingWebhook } = require("@slack/webhook");
 
-const config = yaml.load(
-	fs.readFileSync(path.resolve(__dirname, "./config.yml"), "utf8")
-);
+const ruleUtils = require(`${process.cwd()}/lib/rule-utils.js`);
+const config = ruleUtils.getConfig(__dirname);
 
 module.exports = async (action, flow) => {
 	if (!action.message) {
