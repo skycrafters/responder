@@ -1,19 +1,16 @@
 const Promise = require("bluebird");
-const yaml = require("js-yaml");
-const path = require("path");
-const fs = require("fs");
+
 const AWS = require("aws-sdk");
 const SNS = new AWS.SNS({});
-const { JSONPath } = require("jsonpath-plus");
 
-const ruleUtils = require(`${process.cwd()}/lib/rule-utils.js`);
-const config = ruleUtils.getConfig(__dirname);
+const actionUtils = require(`${process.cwd()}/actions/action-utils.js`);
+const config = actionUtils.getConfiguration(__dirname);
 
 module.exports = async (action, flow) => {
 
 	return Promise.mapSeries(flow.findings, (finding) => {
 
-		let emailBody = `${flow.config.name} \nSeverity: ${flow.config.severity}`;
+		let emailBody = `${finding.message} \nSeverity: ${finding.severity}`;
 			emailBody += "\n----------\n";
 			emailBody += JSON.stringify(finding, null, 2);
 			emailBody += "\n----------\n";
@@ -21,7 +18,7 @@ module.exports = async (action, flow) => {
 
 		return SNS.publish({
 			TopicArn: process.env.EMAIL_TOPIC_ARN,
-			Subject: action.subject || finding.message,
+			Subject: action.subject || finding.ruleTitle,
 			Message: emailBody
 		})
 		.promise()

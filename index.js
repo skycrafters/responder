@@ -2,39 +2,40 @@ const processEvent = require("./eventProcessor.js");
 
 const createUserEvent = {
   version: '0',
-  id: '6cbbdd1e-85b0-4d3e-9a3e-0e5e0bded2ab',
+  id: '39de3151-aa52-093d-1e24-8183e773736c',
   'detail-type': 'AWS API Call via CloudTrail',
   source: 'aws.iam',
-  account: '123412341234',
-  time: '2021-04-06T21:19:58Z',
+  account: '961944027523',
+  time: '2021-05-20T23:06:17Z',
   region: 'us-east-1',
   resources: [],
   detail: {
     eventVersion: '1.08',
     userIdentity: {
       type: 'IAMUser',
-      principalId: 'AID99999999999',
-      arn: 'arn:aws:iam::123412341234:user/cloudone',
-      accountId: '123412341234',
-      accessKeyId: 'AKIA5123123123',
-      userName: 'alice'
+      principalId: 'AIDA576CVAGB5UIDLMO7G',
+      arn: 'arn:aws:iam::961944027523:user/xabi',
+      accountId: '961944027523',
+      accessKeyId: 'AKIA576CVAGBRFQMKYZH',
+      userName: 'xabi'
     },
-    eventTime: '2021-04-06T21:19:58Z',
+    eventTime: '2021-05-20T23:06:17Z',
     eventSource: 'iam.amazonaws.com',
     eventName: 'CreateUser',
     awsRegion: 'us-east-1',
-    sourceIPAddress: '99.99.123.123',
-    userAgent: 'aws-cli/1.18.191 Python/2.7.16 Darwin/20.3.0 botocore/1.19.31',
-    requestParameters: { userName: 'bokb' },
+    sourceIPAddress: '65.48.184.71',
+    userAgent: 'aws-cli/1.18.191 Python/2.7.16 Darwin/20.4.0 botocore/1.19.31',
+    requestParameters: { userName: 'noncompliantuser2' },
     responseElements: { user: [Object] },
-    requestID: 'b6e22fe3-xxxx-4271-a8af-0c2aabc1b1ec',
-    eventID: '2ef22ad6-xxxx-42ec-a17e-62cafdf68acb',
+    requestID: 'adae0414-fbb3-4245-814c-34130d4aa6b4',
+    eventID: 'ff6a6d76-1e54-4b7c-8ca2-079b1eb35c03',
     readOnly: false,
     eventType: 'AwsApiCall',
     managementEvent: true,
     eventCategory: 'Management'
   }
 }
+
 
 
 const signinEvent = {
@@ -294,6 +295,6 @@ const createInstance = {
   }
 }
 
-// processEvent(createUserEvent);
-processEvent(signinEvent);
+processEvent(createUserEvent);
+// processEvent(signinEvent);
 // processEvent(createInstance);

@@ -1,17 +1,13 @@
 flows:
   - rule: NonCompliantUserCreated
+    provider: AWS
     enabled: true
     sequential:
       - command: SendSlack
-        message:
-          values:
-            - label: "Created username"
-              value: "$.event.detail.requestParameters.userName"
-            - label: "IP address"
-              value: "$.event.detail.sourceIPAddress"
-            - label: "Initiating user"
-              value: "$.event.detail.userIdentity.userName"
+        template: aws-event
       - command: SendEmail
+      - command: SendSlack
+        message: I will wait 10 seconds and take action if none taken
       - command: Wait
         duration: 10
       - rule: check
@@ -19,24 +15,20 @@ flows:
         message:
           header: "Will remove non-compliant user"
           values:
-            - label: "Removing username"
-              value: "$.event.detail.requestParameters.userName"
+            - label: "Removing user"
+              value: "$.event.rawEvent.detail.requestParameters.userName"
       - rule: remediate
       - command: SendSlack
         message: "Non-compliant user removed"
 
   - rule: UnauthorizedInstanceCreated
+    provider: AWS
     sequential:
       - command: SendSlack
-        message:
-          values:
-            - label: "Created instances"
-              value: "$.event.detail.responseElements.instancesSet.items[*].instanceId"
-            - label: "IP address"
-              value: "$.event.detail.sourceIPAddress"
-            - label: "Initiating user"
-              value: "$.event.detail.userIdentity.userName"
+        template: aws-event
       - command: SendEmail
+      - command: SendSlack
+        message: I will wait 120 minutes and take action if none taken
       - command: Wait
         duration: 120
       - rule: check
@@ -45,43 +37,32 @@ flows:
       - rule: remediate
 
   - rule: SuspiciousLoginHour
+    provider: AWS
     parallel:
       - command: SendSlack
-        message:
-          values:
-            - label: "Account"
-              value: "$.event.account"
-            - label: "Username"
-              value: "$.event.detail.userIdentity.principalId"
-            - label: "IP address"
-              value: "$.event.detail.sourceIPAddress"
+        template: aws-event
       - command: SendEmail
 
   - rule: SuspiciousLoginIP
+    provider: AWS
     enabled: true
     parallel:
       - command: SendSlack
-        message:
-          values:
-            - label: "Account"
-              value: "$.event.account"
-            - label: "Username"
-              value: "$.event.detail.userIdentity.principalId"
-            - label: "IP address"
-              value: "$.event.detail.sourceIPAddress"
+        template: aws-event
       - command: SendEmail
 
   - rule: RootLogin
+    provider: AWS
     enabled: true
     parallel:
       - command: SendSlack
         message:
-          header: ":bomb: Root has logged in"
+          header: "Root has logged in"
           values:
             - label: "Account"
-              value: "$.event.account"
-            - label: "IP address"
-              value: "$.event.detail.sourceIPAddress"
+              value: "$.event.rawEvent.account"
+            - label: "From"
+              value: "$.event.rawEvent.detail.sourceIPAddress"
       - command: SendEmail
         subject: "Root has logged in!"
 

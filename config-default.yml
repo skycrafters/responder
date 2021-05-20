@@ -1,0 +1,6 @@
+aws:
+  accountMapping:
+  ## this can be used to map AWS Account Ids with named accounts
+  ## e.g.
+  ## - 123412341234: My Application in Production
+  ## - 234523452345: My Application in Development
