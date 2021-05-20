@@ -1,0 +1,30 @@
+blocks:
+  - type: header
+    text:
+      type: plain_text
+      text: "{{finding.ruleTitle}}"
+  - type: divider
+  - type: section
+    text:
+      type: mrkdwn
+      text: "{{finding.message}}"
+  - type: section
+    text:
+      type: mrkdwn
+      text: "
+        *Severity*: {{finding.prettySeverity}}\n
+        *Account*: {{flow.event.account}}\n
+        *Region*: {{flow.event.region}}\n
+        *IP address*: {{flow.event.initiatingIP}}\n
+        *Initiating user*: {{flow.event.initiator}}\n
+        {{#if finding.resources}}
+          *Resources*:
+          {{#each finding.resources}}
+            {{this}}
+          {{/each}}
+        {{/if}}
+      "
+    accessory:
+      type: image
+      image_url: https://previews.123rf.com/images/chekman/chekman1710/chekman171000063/87685776-warning-danger-sign-vector-illustration-warning-square-sign-with-exclamation-mark-.jpg
+      alt_text: "Severity: {{finding.prettySeverity}}"

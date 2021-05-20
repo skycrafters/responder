@@ -1,10 +1,10 @@
 # Create a config.yml next to this file to configure this rule
-name: Non compliant user created
+title: Non compliant user created
 trigger:
   - path: $.source
     value: aws.iam
   - path: $.detail.eventName
     value: CreateUser
-  - path: $.detail.errorCode
+  - path: $.detail.errorCode ## error code should be null
 userNamePattern: "[a-z]+_[a-z]+"
 severity: HIGH

@@ -1,5 +1,5 @@
 # Create a config.yml next to this file to configure this rule
-name: Non-compliant user created
+title: Unauthorized instance created
 trigger:
   - path: $.source
     value: aws.ec2

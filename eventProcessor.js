@@ -4,7 +4,8 @@ const yaml = require("js-yaml");
 const { JSONPath } = require("jsonpath-plus");
 
 const commands = require("./lib/commands");
-const ruleUtils = require("./lib/rule-utils");
+const Event = require("./models/event");
+const Rule = require("./models/rule");
 
 const flows = yaml
 	.load(fs.readFileSync("./actions.yml", "utf8"))
@@ -15,14 +16,13 @@ const flows = yaml
 	})
 	.filter((flow) => flow.rule.enabled !== false)
 	.map((flow) => {
-		flow.config = ruleUtils.getConfig(`${__dirname}/rules/${flow.rule.rule}`);
-		flow.config.trigger = flow.config.trigger || [];
+		flow.trigger = Rule.getTrigger("AWS", flow.rule.rule);
 		return flow;
 	});
 
 const processEvent = (event) => {
 	return Promise.filter(flows, (flow) => {
-		return flow.config.trigger.every((trigger) => {
+		return flow.trigger.every((trigger) => {
 			const eventValue = JSONPath({
 				path: trigger.path,
 				json: event,
@@ -32,7 +32,7 @@ const processEvent = (event) => {
 		})
 	}).map((flow) => {
 		flow.findings = commands.captureEvent(event, flow.rule);
-		flow.event = event;
+		flow.event = new Event(event);
 		return flow;
 	})
 	.then((flows) => {

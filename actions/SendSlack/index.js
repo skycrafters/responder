@@ -4,15 +4,12 @@ const yaml = require("js-yaml");
 const path = require("path");
 const fs = require("fs");
 const { IncomingWebhook } = require("@slack/webhook");
+const Handlebars = require("handlebars");
 
-const ruleUtils = require(`${process.cwd()}/lib/rule-utils.js`);
-const config = ruleUtils.getConfig(__dirname);
+const actionUtils = require(`${process.cwd()}/actions/action-utils.js`);
+const config = actionUtils.getConfiguration(__dirname);
 
 module.exports = async (action, flow) => {
-	if (!action.message) {
-		console.error("Cannot send a Slack message without a message");
-		return;
-	}
 
 	// using the Slack action default config
 	let webhookURL = config.webhookURL;
@@ -25,52 +22,8 @@ module.exports = async (action, flow) => {
 	const webhook = new IncomingWebhook(webhookURL);
 
 	return Promise.mapSeries(flow.findings, async (finding) => {
-		let message = {};
 
-		if (typeof action.message === "string" || action.message.header) {
-			message = {
-				blocks: [
-					{
-						type: "section",
-						text: {
-							type: "mrkdwn",
-							text: `*${
-								action.message.header || action.message
-							}*`,
-						},
-					},
-				],
-			};
-		} else {
-			message = {
-				blocks: [
-					{
-						type: "section",
-						text: {
-							type: "mrkdwn",
-							text: `${config.icons[finding.severity]} *${
-								finding.message
-							}*`,
-						},
-					},
-					{
-						type: "section",
-						text: {
-							type: "mrkdwn",
-							text: action.message.values
-								.map((value) => {
-									const result = JSONPath({
-										path: value.value,
-										json: flow,
-									});
-									return `*${value.label}*: ${result}`;
-								})
-								.join("\n"),
-						},
-					},
-				],
-			};
-		}
+		const message = buildMessage(finding, action, flow);
 		try {
 			await webhook.send(message);
 			return true;
@@ -81,3 +34,79 @@ module.exports = async (action, flow) => {
 		}
 	});
 };
+
+const buildMessage = (finding, action, flow) => {
+
+	let message = {};
+
+	if (action.template && fs.existsSync(`${__dirname}/templates/${action.template}.yml`)) {
+
+		const template = Handlebars.compile(fs.readFileSync(`${__dirname}/templates/${action.template}.yml`, "utf8"));
+
+		const result = yaml.load(template({
+				finding,
+				action,
+				flow
+			}, {
+				// security
+				// not recommended, but can't find a better way for now
+				allowProtoPropertiesByDefault: true
+	  		}
+		))
+
+		return result;
+	}
+
+	let blocks = [];
+
+	if (typeof action.message === "string" || action.message.header) {
+		blocks.push({
+			type: "header",
+			text: {
+				type: "plain_text",
+				text: action.message.header || action.message
+			},
+		});
+	} else {
+		blocks = blocks.concat({
+			type: "header",
+			text: {
+				type: "plain_text",
+				text: finding.ruleTitle
+			}
+		},
+		{
+			type: "divider"
+		},
+		{
+			type: "section",
+			text: {
+				type: "plain_text",
+				text: finding.message
+			}
+		});
+	}
+
+	if (action.message.values) {
+		blocks.push({
+			type: "section",
+			text: {
+				type: "mrkdwn",
+				text: action.message.values
+					.map((value) => {
+						const result = JSONPath({
+							path: value.value,
+							json: flow,
+						});
+						return `*${value.label}*: ${result}`;
+					})
+					.join("\n"),
+			},
+		});
+	}
+
+	return {
+		blocks
+	};
+
+}

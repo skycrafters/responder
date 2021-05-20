@@ -1,5 +1,5 @@
 # Create a config.yml next to this file to configure this rule
-name: Log in outside of working hours
+title: Log in outside of working hours
 trigger:
   - path: $.source
     value: aws.signin

@@ -1,10 +1,11 @@
 # Create a config.yml next to this file to configure this rule
-name: Root has logged in
+title: Login from an untrusted IP address
 trigger:
   - path: $.source
     value: aws.signin
   - path: $.detail.eventName
     value: ConsoleLogin
-  - path: $.detail.userIdentity.type
-    value: Root
-severity: EXTREME
+severity: MEDIUM
+trustedIPs:
+  - "24.111.111.111"
+  - "24.111.111.112"
