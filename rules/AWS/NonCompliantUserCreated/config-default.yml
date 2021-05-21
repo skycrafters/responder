@@ -5,6 +5,6 @@ trigger:
     value: aws.iam
   - path: $.detail.eventName
     value: CreateUser
-  - path: $.detail.errorCode ## error code should be null
+  - path: $.detail.errorCode ## error code must be null
 userNamePattern: "[a-z]+_[a-z]+"
 severity: HIGH
