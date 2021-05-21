@@ -82,3 +82,7 @@ The capture sequence, is a rule that is going to be run again the incoming event
 
 *The flow sequence*<br />
 A flow sequence will start when a finding has been discoverd, it a series of actions that can be taken sequentially or in parallel.
+
+# Documentation
+
+[Capture events](capture-events.md)
