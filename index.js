@@ -8,7 +8,7 @@ const createUserEvent = {
   account: '961944027523',
   time: '2021-05-20T23:06:17Z',
   region: 'us-east-1',
-  ***REMOVED*** [],
+  resources: [],
   detail: {
     eventVersion: '1.08',
     userIdentity: {
@@ -46,7 +46,7 @@ const signinEvent = {
   account: '123412341234',
   time: '2021-04-08T15:24:47Z',
   region: 'us-east-1',
-  ***REMOVED*** [],
+  resources: [],
   detail: {
     eventVersion: '1.08',
     userIdentity: {
@@ -84,7 +84,7 @@ const createInstance = {
   account: '123412341234',
   time: '2021-04-15T17:46:48Z',
   region: 'us-east-1',
-  ***REMOVED*** [],
+  resources: [],
   detail: {
     "eventVersion": "1.08",
     "userIdentity": {

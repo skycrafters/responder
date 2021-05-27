@@ -3,7 +3,7 @@ const path = require("path");
 
 let rule = new Rule({
 	name: path.basename(path.dirname(__filename)),
-	***REMOVED*** "AWS"
+	provider: "AWS"
 })
 
 rule.capture = () => {

@@ -1,12 +1,16 @@
 const Promise = require("bluebird");
 const { exec } = require("child_process");
 const fs = require("fs");
+const path = require("path");
+const yaml = require("js-yaml");
 const crypto = require("crypto");
 const AWS = require("aws-sdk");
 AWS.config.setPromisesDependency(Promise);
 const EC2 = new AWS.EC2();
 const SecretsManager = new AWS.SecretsManager();
 const SSMSecretName = "CloudResponderSecret";
+
+const Configuration = require(`${process.cwd()}/models/configuration.js`);
 
 const createSecret = async (regions) => {
 	const key = await SecretsManager.getRandomPassword({
@@ -189,7 +193,7 @@ const deployEventBridgeRule = async (region, endpoint) => {
 			.catch((error) => {
 				if (
 					error.code === "ValidationError" &&
-					error.message === "No updates are to be performed."
+					error.message === "No updates to perform."
 				) {
 					console.log("[%s] %s continuing...", region, error.message);
 					return;
@@ -206,13 +210,9 @@ const deployEventBridgeRule = async (region, endpoint) => {
 
 	await createSecret(regions);
 
-	// recursively scan rules only select the enabled
-	// compile all the policies
-	// update the serverless yml with the policy
-
 	await deployServerless("us-east-1");
 	const endpoint = await getHTTPEndpoint();
-	// ----
+
 	await Promise.map(regions, (region) => {
 		return deployEventBridgeRule(region, endpoint);
 	});

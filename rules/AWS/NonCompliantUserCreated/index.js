@@ -8,7 +8,7 @@ const Rule = require(`${process.cwd()}/models/rule.js`);
 
 let rule = new Rule({
 	name: path.basename(path.dirname(__filename)),
-	***REMOVED*** "AWS"
+	provider: "AWS"
 });
 
 rule.capture = (event, context) => {
@@ -19,7 +19,7 @@ rule.capture = (event, context) => {
 	) {
 		findings.push({
 			message: `A user with username: ${event.detail.requestParameters.userName} has been created against the naming convention`,
-			***REMOVED*** [event.detail.requestParameters.userName],
+			resources: [event.detail.requestParameters.userName],
 		});
 	}
 	return findings;

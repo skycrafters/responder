@@ -1,7 +1,2 @@
 ## Slach channel webhook
 webhookURL: "https://hooks.slack.com/services/ABCD/1234"
-icons:
-  EXTREME: ":bomb:"
-  HIGH: ":warning:"
-  MEDIUM: ":small_red_triangle:"
-  LOW: ":eyes:"

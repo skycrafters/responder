@@ -5,9 +5,8 @@ const path = require("path");
 const fs = require("fs");
 const { IncomingWebhook } = require("@slack/webhook");
 const Handlebars = require("handlebars");
-
-const actionUtils = require(`${process.cwd()}/actions/action-utils.js`);
-const config = actionUtils.getConfiguration(__dirname);
+const Configuration = require(`${process.cwd()}/models/configuration.js`);
+const config = (new Configuration([__dirname])).values;
 
 module.exports = async (action, flow) => {
 

@@ -1,6 +1,6 @@
 flows:
   - rule: NonCompliantUserCreated
-    ***REMOVED*** AWS
+    provider: AWS
     enabled: true
     sequential:
       - command: SendSlack
@@ -22,29 +22,29 @@ flows:
         message: "Non-compliant user removed"
 
   - rule: UnauthorizedInstanceCreated
-    ***REMOVED*** AWS
+    provider: AWS
     sequential:
       - command: SendSlack
         template: aws-event
       - command: SendEmail
       - command: SendSlack
-        message: I will wait 120 minutes and take action if none taken
+        message: I will wait 2 minutes and take action if none taken
       - command: Wait
         duration: 120
       - rule: check
       - command: SendSlack
-        message: "Will terminate instances"
+        message: Will terminate instances
       - rule: remediate
 
   - rule: SuspiciousLoginHour
-    ***REMOVED*** AWS
+    provider: AWS
     parallel:
       - command: SendSlack
         template: aws-event
       - command: SendEmail
 
   - rule: SuspiciousLoginIP
-    ***REMOVED*** AWS
+    provider: AWS
     enabled: true
     parallel:
       - command: SendSlack
@@ -52,7 +52,7 @@ flows:
       - command: SendEmail
 
   - rule: RootLogin
-    ***REMOVED*** AWS
+    provider: AWS
     enabled: true
     parallel:
       - command: SendSlack

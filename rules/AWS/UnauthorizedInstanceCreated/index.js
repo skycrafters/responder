@@ -11,7 +11,7 @@ const Rule = require(`${process.cwd()}/models/rule.js`);
 
 let rule = new Rule({
 	name: path.basename(path.dirname(__filename)),
-	***REMOVED*** "AWS"
+	provider: "AWS"
 })
 
 rule.capture = (event, context) => {
@@ -22,7 +22,7 @@ rule.capture = (event, context) => {
 			meta: {
 				instanceType: event.detail.requestParameters.instanceType
 			},
-			***REMOVED*** event.detail.responseElements.instancesSet.items.map(
+			resources: event.detail.responseElements.instancesSet.items.map(
 				(instance) => instance.instanceId
 			)
 		});

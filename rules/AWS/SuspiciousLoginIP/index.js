@@ -6,7 +6,7 @@ const Rule = require(`${process.cwd()}/models/rule.js`);
 
 let rule = new Rule({
 	name: path.basename(path.dirname(__filename)),
-	***REMOVED*** "AWS"
+	provider: "AWS"
 })
 
 rule.capture = (event, context) => {

@@ -8,3 +8,13 @@ trigger:
   - path: $.detail.errorCode ## error code must be null
 userNamePattern: "[a-z]+_[a-z]+"
 severity: HIGH
+IAMPolicyStatement:
+  - Effect: Allow
+    Action:
+      - iam:DeleteUser
+      - iam:ListAccessKeys
+      - iam:DeleteAccessKey
+      - iam:GetLoginProfile
+      - iam:GetUser
+      - iam:DeleteLoginProfile
+    Resource: "*"
