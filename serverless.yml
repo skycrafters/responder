@@ -11,45 +11,16 @@ provider:
   versionFunctions: false
   lambdaHashingVersion: 20201221
   region: ${opt:region, self:custom.defaultRegion}
-  environment:
-    EMAIL_TOPIC_ARN: !Ref "EmailTopic"
-
-  iam:
-   role:
-    statements:
-      - Effect: Allow
-        Action:
-          - secretsmanager:GetSecretValue
-        Resource: !Sub "arn:aws:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:CloudResponderSecret*"
-      - Effect: Allow
-        Action:
-          - sns:Publish
-        Resource:
-          - !Sub "arn:aws:sns:${AWS::Region}:${AWS::AccountId}:dispatch"
-          - !Ref "EmailTopic"
-      - Effect: Allow
-        Action:
-          - iam:DeleteUser
-          - iam:ListAccessKeys
-          - iam:DeleteAccessKey
-          - iam:GetLoginProfile
-          - iam:GetUser
-          - iam:DeleteLoginProfile
-        Resource: "*"
-      - Effect: Allow
-        Action:
-          - ec2:DescribeInstanceStatus
-          - ec2:DescribeInstances
-          - ec2:TerminateInstances
-        Resource: "*"
 
 functions:
   authorizer:
     handler: serverless.authorizer
     timeout: 30
+    role: AuthorizerRole
   capture:
     handler: serverless.capture
     timeout: 30
+    role: CaptureRole
     events:
       - http:
           path: capture
@@ -58,25 +29,88 @@ functions:
             name: authorizer
             resultTtlInSeconds: 0
             identitySource: method.request.header.APIKey
-
   process:
     handler: serverless.process
     timeout: 900
+    role: ProcessRole
     events:
       - sns: dispatch
 
 resources:
-  Resources:
-    EmailTopic:
-      Type: AWS::SNS::Topic
-      Properties:
-        Subscription:
-          - Endpoint: "xabi@keinu.net"
-            Protocol: "email"
-        TopicName: "EmailTopic"
-      # EmailSubscription:
-      #   Type: AWS::SNS::Subscription
-      #   Properties:
-      #     Endpoint: xabi@keinu.net
-      #     Protocol: email
-      #     TopicArn: !Ref 'EmailTopic'
+  - Resources:
+      AuthorizerRole:
+        Type: AWS::IAM::Role
+        Properties:
+          RoleName: AuthorizerRole
+          AssumeRolePolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Principal:
+                  Service:
+                    - lambda.amazonaws.com
+                Action: sts:AssumeRole
+          Policies:
+            - PolicyName: AuthorizerRolePolicy
+              PolicyDocument:
+                Version: '2012-10-17'
+                Statement:
+                  - Effect: Allow
+                    Action:
+                      - secretsmanager:GetSecretValue
+                    Resource: !Sub "arn:aws:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:CloudResponderSecret*"
+            - PolicyName: LogsPolicy
+              PolicyDocument:
+                Version: '2012-10-17'
+                Statement: ${file(./serverless-log-policy.yml):Statement}
+
+      CaptureRole:
+        Type: AWS::IAM::Role
+        Properties:
+          RoleName: CaptureRole
+          AssumeRolePolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Principal:
+                  Service:
+                    - lambda.amazonaws.com
+                Action: sts:AssumeRole
+          Policies:
+            - PolicyName: CaptureRolePoliy
+              PolicyDocument:
+                Version: '2012-10-17'
+                Statement:
+                  - Effect: Allow
+                    Action:
+                      - sns:Publish
+                    Resource:
+                      - !Sub "arn:aws:sns:${AWS::Region}:${AWS::AccountId}:dispatch"
+            - PolicyName: LogsPolicy
+              PolicyDocument:
+                Version: '2012-10-17'
+                Statement: ${file(./serverless-log-policy.yml):Statement}
+
+      ProcessRole:
+        Type: AWS::IAM::Role
+        Properties:
+          RoleName: ProcessRole
+          AssumeRolePolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Principal:
+                  Service:
+                    - lambda.amazonaws.com
+                Action: sts:AssumeRole
+          Policies:
+            - PolicyName: ProcessRolePolicy
+              PolicyDocument:
+                Version: '2012-10-17'
+                Statement: ${file(./serverless-policies.js)}
+            - PolicyName: LogsPolicy
+              PolicyDocument:
+                Version: '2012-10-17'
+                Statement: ${file(./serverless-log-policy.yml):Statement}
+
+  - ${file(./serverless-resources.js)}

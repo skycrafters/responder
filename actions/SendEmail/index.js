@@ -2,11 +2,14 @@ const Promise = require("bluebird");
 
 const AWS = require("aws-sdk");
 const SNS = new AWS.SNS({});
+const STS = new AWS.STS({});
 
-const actionUtils = require(`${process.cwd()}/actions/action-utils.js`);
-const config = actionUtils.getConfiguration(__dirname);
+const Configuration = require(`${process.cwd()}/models/configuration.js`);
+const config = (new Configuration([__dirname])).values;
 
 module.exports = async (action, flow) => {
+
+	const AWSAccountId = await STS.getCallerIdentity({}).promise().then(data => data.Account);
 
 	return Promise.mapSeries(flow.findings, (finding) => {
 
@@ -16,8 +19,10 @@ module.exports = async (action, flow) => {
 			emailBody += "\n----------\n";
 			emailBody += JSON.stringify(flow.event, null, 2);
 
+		const topicARN = `arn:aws:sns:${process.env.AWS_REGION}:${AWSAccountId}:${config.EmailTopicName}`;
+
 		return SNS.publish({
-			TopicArn: process.env.EMAIL_TOPIC_ARN,
+			TopicArn: topicARN,
 			Subject: action.subject || finding.ruleTitle,
 			Message: emailBody
 		})

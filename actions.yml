@@ -28,12 +28,12 @@ flows:
         template: aws-event
       - command: SendEmail
       - command: SendSlack
-        message: I will wait 120 minutes and take action if none taken
+        message: I will wait 2 minutes and take action if none taken
       - command: Wait
         duration: 120
       - rule: check
       - command: SendSlack
-        message: "Will terminate instances"
+        message: Will terminate instances
       - rule: remediate
 
   - rule: SuspiciousLoginHour

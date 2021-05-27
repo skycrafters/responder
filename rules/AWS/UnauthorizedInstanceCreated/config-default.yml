@@ -15,3 +15,10 @@ blackListedInstances:
   - (.*)\.12xlarge
   - (.*)\.16xlarge
   - (.*)\.24xlarge
+IAMPolicyStatement:
+  - Effect: Allow
+    Action:
+      - ec2:DescribeInstanceStatus
+      - ec2:DescribeInstances
+      - ec2:TerminateInstances
+    Resource: "*"

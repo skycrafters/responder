@@ -1,36 +1,6 @@
-const yaml = require("js-yaml");
-const path = require("path");
-const fs = require("fs");
+
 const Finding = require(`${process.cwd()}/models/finding.js`);
-
-const getConfiguration = (provider, name) => {
-	const pathSections = ["rules", provider, name];
-
-	let userConfig = {};
-	if (fs.existsSync(path.resolve(...pathSections, "./config.yml"))) {
-		userConfig = yaml.load(
-			fs.readFileSync(path.resolve(...pathSections, "./config.yml"), "utf8")
-		);
-	}
-
-	if (!userConfig) {
-		userConfig = {};
-	}
-
-	let defaultConfig = {};
-	if (fs.existsSync(path.resolve(...pathSections, "./config-default.yml"))) {
-		defaultConfig = yaml.load(
-			fs.readFileSync(path.resolve(...pathSections, "./config-default.yml"), "utf8")
-		);
-	}
-
-	if (!defaultConfig) {
-		defaultConfig = {};
-	}
-
-	return Object.assign(defaultConfig, userConfig);
-}
-
+const Configuration = require(`${process.cwd()}/models/configuration.js`);
 
 module.exports = class Rule {
 	constructor(rule) {
@@ -61,13 +31,13 @@ module.exports = class Rule {
 			return this.ruleConfig;
 		}
 
-		this.ruleConfig = getConfiguration(this.provider, this.name);
+		this.ruleConfig = (new Configuration(["rules", this.provider, this.name])).values;
 
 		return this.ruleConfig;
 	}
 
 	static getTrigger(provider, ruleName) {
-		const configuration = getConfiguration(provider, ruleName);
+		const configuration = (new Configuration(["rules", provider, ruleName])).values;
 
 		return configuration.trigger;
 	}

@@ -1,0 +1,20 @@
+EmailTopicName: ResponderEmailTopic
+IAMPolicyStatement:
+  - Effect: Allow
+    Action:
+      - sns:Publish
+    Resource:
+      - "Fn::Sub": "arn:aws:sns:${AWS::Region}:${AWS::AccountId}:ResponderEmailTopic"
+  - Effect: Allow
+    Action:
+      - sts:GetCallerIdentity
+    Resource:
+      - "*"
+Resources:
+  ResponderEmailTopic:
+    Type: AWS::SNS::Topic
+    Properties:
+      Subscription:
+        - Endpoint: "xabi@keinu.net"
+          Protocol: "email"
+      TopicName: "ResponderEmailTopic"

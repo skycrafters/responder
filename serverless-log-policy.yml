@@ -1,0 +1,6 @@
+Statement:
+  - Action:
+      - logs:*
+    Resource:
+      - "arn:aws:logs:*:*:*"
+    Effect: Allow
