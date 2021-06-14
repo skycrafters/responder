@@ -7,5 +7,5 @@ trigger:
     value: ConsoleLogin
 severity: MEDIUM
 trustedIPs:
-  - "24.111.111.111"
-  - "24.111.111.112"
+  - "123.123.123.123"
+  - "234.234.234.234"
