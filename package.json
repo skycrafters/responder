@@ -4,7 +4,7 @@
   "description": "",
   "main": "handler.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "standard && node my-tests.js",
     "deploy": "node serverless-deploy.js",
     "remove": "node serverless-remove.js"
   },
@@ -33,6 +33,11 @@
     "@babel/plugin-transform-modules-commonjs": "^7.12.1",
     "aws-sdk": "^2.805.0",
     "babel-cli": "^6.26.0",
+    "eslint": "^7.28.0",
+    "eslint-config-standard": "^16.0.3",
+    "eslint-plugin-import": "^2.23.4",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^5.1.0",
     "serverless": "^2.31.0",
     "slack": "^11.0.2"
   }

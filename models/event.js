@@ -1,65 +1,62 @@
 module.exports = class Event {
-  constructor(event) {
-    this.rawEvent = event;
+  constructor (event) {
+    this.rawEvent = event
   }
 
-  get initiator() {
+  get initiator () {
   	if (this.isAWS()) {
-  		if (this.rawEvent.detail.userIdentity?.type === "IAMUser") {
-  			return this.rawEvent.detail.userIdentity?.userName;
+  		if (this.rawEvent.detail.userIdentity?.type === 'IAMUser') {
+  			return this.rawEvent.detail.userIdentity?.userName
   		}
-  		if (this.rawEvent.detail.userIdentity?.type === "Root") {
-  			return "Root user"
+  		if (this.rawEvent.detail.userIdentity?.type === 'Root') {
+  			return 'Root user'
   		}
   	}
 
-  	return "Unknown";
+  	return 'Unknown'
   }
 
-  get initiatingIP() {
+  get initiatingIP () {
   	if (this.isAWS()) {
   		if (this.rawEvent.detail.sourceIPAddress) {
-  			return this.rawEvent.detail.sourceIPAddress;
+  			return this.rawEvent.detail.sourceIPAddress
   		}
   	}
 
-  	return "Unknown";
+  	return 'Unknown'
   }
 
-  get region() {
+  get region () {
   	if (this.isAWS()) {
   		if (this.rawEvent.detail.awsRegion) {
-  			return this.rawEvent.detail.awsRegion;
+  			return this.rawEvent.detail.awsRegion
   		}
   	}
 
-  	return "Unknown";
+  	return 'Unknown'
   }
 
-  get account() {
+  get account () {
   	if (this.isAWS()) {
   		if (this.rawEvent.account) {
-  			return this.rawEvent.account;
+  			return this.rawEvent.account
   		}
   	}
 
-  	return "Unknown";
+  	return 'Unknown'
   }
 
-  get source() {
-
-  	if (this.rawEvent["details-type"] === "AWS Console Sign In via CloudTrail") {
-  		return "AWS";
+  get source () {
+  	if (this.rawEvent['details-type'] === 'AWS Console Sign In via CloudTrail') {
+  		return 'AWS'
   	}
 
-  	if (this.rawEvent.source.startsWith("aws.")){
-  		return "AWS"
+  	if (this.rawEvent.source.startsWith('aws.')) {
+  		return 'AWS'
   	}
-
   }
 
-  isAWS() {
-  	return this.source === "AWS";
+  isAWS () {
+  	return this.source === 'AWS'
   }
-
 }

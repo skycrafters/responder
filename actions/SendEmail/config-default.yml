@@ -15,6 +15,6 @@ Resources:
     Type: AWS::SNS::Topic
     Properties:
       Subscription:
-        - Endpoint: "xabi@keinu.net"
+        - Endpoint: "your@email.com"
           Protocol: "email"
       TopicName: "ResponderEmailTopic"
