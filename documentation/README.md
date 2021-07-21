@@ -1,6 +1,17 @@
-# Capture events principles
+# Table of contents
 
-## Triggers 
+[Overview](#overview)
+[Creating a rule](#creating-rule)
+   [Capturing events principles](#captureevents)
+	   [Creating a rule trigger](#rule-trigger)
+	   [Creating a rule logic](#rule-logic)
+
+
+# Creating a rule
+
+## <a name="captureevents"></a>Capture events principles
+
+### Triggers 
 
 Capuring events, or detecting events is the entryway to the software
 The capture phase will compare the input event with all the enabled triggers that could start a flow.
@@ -10,7 +21,7 @@ A trigger is a set of key-value statments that will determine whether the event 
 - The value is the value to be asserted<br />
 If all the values on the trigger array match, then the capture phase can begin.
 
-### Example
+#### Example
 
 Consider the following in config-default.yml of a rule:<br />
 
@@ -46,7 +57,7 @@ However, if the event payload looks like the following, due to a presence of an 
 }
 ```
 
-## Capture
+### Capture
 
 The capture stage is the phase that will check if the event that has been captured via the trigger creates a finding. It is a more granular logic than the trigger phase.
 

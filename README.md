@@ -85,8 +85,10 @@ A flow sequence will start when a finding has been discoverd, it a series of act
 
 # Documentation
 
-[Capture events](capture-events.md)
+[General documentation](./documentation)
 
-# Actions
+# Out-of-the-box Actions
 
-[Send Slack](actions/SendSlack/documentation.md)
+- [Send Slack](actions/SendSlack/documentation.md)
+- [Send Email](actions/SendEmail/documentation.md)
+- [Wait](actions/Wait/documentation.md)

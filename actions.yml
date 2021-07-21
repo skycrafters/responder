@@ -9,7 +9,7 @@ flows:
       - command: SendSlack
         message: I will wait 10 seconds and take action if none taken
       - command: Wait
-        duration: 10
+        duration: 1
       - rule: check
       - command: SendSlack
         message:
@@ -30,7 +30,7 @@ flows:
       - command: SendSlack
         message: I will wait 2 minutes and take action if none taken
       - command: Wait
-        duration: 120
+        duration: 1
       - rule: check
       - command: SendSlack
         message: Will terminate instances

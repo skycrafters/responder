@@ -2,9 +2,13 @@ env:
   browser: false
   commonjs: true
   es6: true
-  esversion: 6
 extends:
   - standard
 parserOptions:
   ecmaVersion: 12
-rules: {}
+rules:
+  semi: ["error", "always"]
+  quotes: ["error", "double"]
+  indent: ["error", "tab"]
+  no-tabs: 0
+
