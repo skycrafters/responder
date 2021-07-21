@@ -14,9 +14,15 @@ Install the [Serverless Framework](https://github.com/serverless/serverless#read
 npm install -g serverless
 ```
 
-Install all the dependencies
+Git clone this repo
+```
+git clone [ssh or https] or use Github cli [gh repo clone skycrafters/responder]
+```
+
+CD into directory and install all the dependencies
 
 ```
+cd responder
 npm install
 ```
 
@@ -41,6 +47,34 @@ An IAM has logged in outside of the specified work hours, it will send a Slack m
 
 - *Suspicious log in from an unknown IP address*<br />
 An IAM has logged in outside of the specified IP addresses, it will send a Slack message to notify anyone or anyteam of such event
+
+### Configure the application to you needs
+
+A `config-default.yml` exists for default/basic configuration examples, these files are part of the base software. 
+
+#### To create your own configuration
+
+*Slack* 
+
+The module can be found under `actions/SendSlack`
+
+Create a `config.yml` file and copy the `default-config.yml` content to it and configure your own Webhook URL
+
+*Email*
+
+The module can be found under `actions/SendEmail`
+
+
+Create a `config.yml` file and copy the `default-config.yml` content to it and configure your own emails you want to send a nbotification to. You can assign multiple emails as per the example below
+
+```
+      Subscription:
+        - Endpoint: "jane_doe@corporation.com"
+          Protocol: "email"
+        - Endpoint: "lucy_luke@corporation.com"
+          Protocol: "email"
+
+```
 
 ### Deploy
 
