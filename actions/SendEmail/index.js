@@ -22,7 +22,7 @@ module.exports = async (action, flow) => {
     return SNS.publish({
       TopicArn: topicARN,
       Subject: action.subject || finding.ruleTitle,
-      Message: emailBody
+      Message: emailBody  
     })
       .promise()
       .then(() => {

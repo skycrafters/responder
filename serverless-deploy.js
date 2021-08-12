@@ -205,7 +205,7 @@ const deployEventBridgeRule = async (region, endpoint) => {
 
 (async () => {
   const regions = await getRegions()
-
+  console.log('here are our regions: ', regions)
   await createSecret(regions)
 
   await deployServerless('us-east-1')

@@ -11,6 +11,7 @@ module.exports.getConfiguration = (actionName) => {
       fs.readFileSync(path.resolve(...pathSections, './config.yml'), 'utf8')
     )
   }
+  
 
   if (!userConfig) {
     userConfig = {}

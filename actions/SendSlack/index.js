@@ -22,6 +22,7 @@ module.exports = async (action, flow) => {
   return Promise.mapSeries(flow.findings, async (finding) => {
     const message = buildMessage(finding, action, flow)
     try {
+      console.log(`sendslack----action------------------\n ${JSON.stringify(action)}`)
       await webhook.send(message)
       return true
     } catch (error) {

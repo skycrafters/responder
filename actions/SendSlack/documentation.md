@@ -9,7 +9,7 @@ This action aims to create an easy way to [format](https://api.slack.com/messagi
 The Slack integration can be used in different ways
 
 ### Simple message
-A sinple text message can be specified by configuring a value for the `message` property
+A simple text message can be specified by configuring a value for the `message` property
 ```
 - rule: TheRuleName
   sequential:
