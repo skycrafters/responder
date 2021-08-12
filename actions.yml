@@ -28,7 +28,8 @@ flows:
         message: I will wait 10 seconds and take action if none 
      # discord 2nd message
       - command: SendDiscord
-        message: I will wait 10 seconds and take action if none taken   
+        message: I will wait 10 seconds and take action if none taken 
+        # template: aws-event  
      # discord 2nd message
      
       - command: Wait

@@ -3,23 +3,11 @@ const { JSONPath } = require('jsonpath-plus');
 const yaml = require('js-yaml');
 const path = require('path');
 const fs = require('fs');
-// const { IncomingWebhook } = require('@slack/webhook')
-const { Webhook } = require('discord-webhook-node');
 const Handlebars = require('handlebars');
 const Configuration = require(`${process.cwd()}/models/configuration.js`);
 const config = new Configuration([__dirname]).values;
 const fetch = require('node-fetch')
-///////
 
-// const hook = new Webhook("YOUR WEBHOOK URL");
-
-// const IMAGE_URL = 'https://homepages.cae.wisc.edu/~ece533/images/airplane.png';
-// hook.setUsername('Discord Webhook Node Name');
-// hook.setAvatar(IMAGE_URL);
-
-// hook.send("Hello there!");
-
-///////
 module.exports = async (action, flow) => {
   // using the Slack action default config
   let webhookURL = config.webhookURL;
@@ -49,20 +37,11 @@ module.exports = async (action, flow) => {
       // console.log(`message is: ${message.blocks[0].text.text}`)
       console.log(
         `sendDDD----action------------------\n ${JSON.stringify(
-          action
-        )} and the dirname ${__dirname}`
-      );
-
+          action)} and the dirname ${__dirname}`);
       console.log('                                               ');
 
       console.log(`message is:::: ${JSON.stringify(message)}`);
       console.log('                                               ');
-
-      // webhook.setUsername(message.username);
-      // webhook.setAvatar(message.avatar_url);
-
-      // await webhook.send(message.content);
-
       console.log('message -------BLOCKS', message.blocks);
       // await webhook.send(JSON.stringify(message))
       await fetch(webhookURL, {
@@ -72,12 +51,10 @@ module.exports = async (action, flow) => {
           'Content-Type': 'application/json',
         },
 
-        //make sure to serialize your JSON body
         body: JSON.stringify(message),
       }).then((response) => {
-        console.log('sussfully posted our fetch...',response);
-        //do something awesome that makes the world a better place
-      });
+        console.log('sussfully posted our fetch...');
+      })
 
       // await webhook.send(message.blocks[0].text.text)
       return true;
@@ -114,21 +91,30 @@ const buildMessage = (finding, action, flow) => {
         }
       )
     );
-    console.log('the result is.......', JSON.stringify(result));
+    console.log('the finding is.......', JSON.stringify(finding));
+    console.log('the action is.......', JSON.stringify(action));
+
     return result;
   }
 
   let blocks = [];
 
   if (typeof action.message === 'string' || action.message.header) {
-    blocks.push({
-      type: 'header',
-      text: {
-        type: 'plain_text',
-        text: action.message.header || action.message,
-      },
-    });
-  } else {
+    let msgObject = {
+      "username": "Responder",
+      "avatar_url": "https://i.imgur.com/fKL31aD.jpg%22%7D%7D%5D%7D",
+      "content": `**${action.message.header || action.message}**`
+    }
+    // blocks.push({
+    //   type: 'header',
+    //   text: {
+    //     type: 'plain_text',
+    //     text: action.message.header || action.message,
+    //   },
+    // });
+    return msgObject
+  } 
+  else {
     blocks = blocks.concat(
       {
         type: 'header',
