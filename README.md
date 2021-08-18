@@ -4,7 +4,7 @@ The Responder aims to listen to multiple event sources and provides a simple way
 
 ### Local set up
 
-Make sure the current CLI profile is set up with admin priviledges to your target AWS account.
+Make sure the current AWS CLI profile is set up with sufficient priviledges to your target AWS account.
 
 Clone this repository locally to your machine.
 
@@ -25,6 +25,9 @@ CD into directory and install all the dependencies
 cd responder
 npm install
 ```
+
+/!\ Make sure to Configure your AWS to have at least on Trail in CloudTrail enabled across all regions.
+
 
 ### Getting started
 
