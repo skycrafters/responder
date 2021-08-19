@@ -21,8 +21,6 @@ flows:
           values:
             - label: "Removing user"
               value: "$.event.rawEvent.detail.requestParameters.userName" 
-      # - command: SendDiscord
-      #   template: aws-event
       - command: SendSlack
         message:
           header: "Will remove non-compliant user"
