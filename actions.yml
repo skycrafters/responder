@@ -3,46 +3,26 @@ flows:
     provider: AWS
     enabled: true
     sequential:
-      #trying to add discord here
-      # - command: SendDiscord
-      #   message:
-      #     header: "Non-compliant user created"
-      #     values:
-      #       - label: "Account"
-      #         value: "$.event.rawEvent.account"
-      #       - label: "From"
-      #         value: "$.event.rawEvent.detail.sourceIPAddress"
-              
-      # end of change...
-
-      # discord 1st message
       - command: SendDiscord
         template: aws-event
-              
-      # discord 1st message
-
       - command: SendSlack
         template: aws-event
       - command: SendEmail
       - command: SendSlack
         message: I will wait 10 seconds and take action if none 
-     # discord 2nd message
       - command: SendDiscord
         message: I will wait 10 seconds and take action if none taken 
-        # template: aws-event  
-     # discord 2nd message
-     
       - command: Wait
         duration: 10
       - rule: check
-      # discord 3rd message
       - command: SendDiscord
         message:
           header: "Will remove non-compliant user"
           values:
             - label: "Removing user"
               value: "$.event.rawEvent.detail.requestParameters.userName" 
-      # discord 3rd message    
+      # - command: SendDiscord
+      #   template: aws-event
       - command: SendSlack
         message:
           header: "Will remove non-compliant user"
@@ -50,10 +30,8 @@ flows:
             - label: "Removing user"
               value: "$.event.rawEvent.detail.requestParameters.userName"
       - rule: remediate
-      # discord 4rth message
       - command: SendDiscord
         message: "Non-compliant user removed"      
-      # discord 4rth message
       - command: SendSlack
         message: "Non-compliant user removed"
 
@@ -102,11 +80,9 @@ flows:
     parallel:
       - command: SendSlack
         template: aws-event
-        # adding discord
       - command: SendDiscord
         message: Log in from Suspicious IP Detected
         template: aws-event  
-        # adding discord
       - command: SendEmail
 
   - rule: RootLogin
@@ -121,7 +97,6 @@ flows:
               value: "$.event.rawEvent.account"
             - label: "From"
               value: "$.event.rawEvent.detail.sourceIPAddress"
-      # adding discord
       - command: SendDiscord
         message: 
           header: "Root has logged in"
@@ -130,7 +105,6 @@ flows:
               value: "$.event.rawEvent.account"
             - label: "From"
               value: "$.event.rawEvent.detail.sourceIPAddress"
-      # adding discord
       - command: SendEmail
         subject: "Root has logged in!"
 

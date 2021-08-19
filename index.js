@@ -1,5 +1,5 @@
 const processEvent = require('./eventProcessor.js')
-
+//these are simulated events that allow you to test responder locally
 const createUserEvent = {
   version: '0',
   id: '39de3151-aa52-093d-1e24-8183e773736c',
@@ -25,7 +25,7 @@ const createUserEvent = {
     awsRegion: 'us-east-1',
     sourceIPAddress: '65.48.184.71',
     userAgent: 'aws-cli/1.18.191 Python/2.7.16 Darwin/20.4.0 botocore/1.19.31',
-    requestParameters: { userName: 'noncompliantuser2' },
+    requestParameters: { userName: 'testuser' },
     responseElements: { user: [Object] },
     requestID: 'adae0414-fbb3-4245-814c-34130d4aa6b4',
     eventID: 'ff6a6d76-1e54-4b7c-8ca2-079b1eb35c03',

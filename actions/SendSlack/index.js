@@ -62,8 +62,9 @@ const buildMessage = (finding, action, flow) => {
         type: 'plain_text',
         text: action.message.header || action.message
       }
-    })
+    }) // blocks = [{header:text},]
   } else {
+    //sendslack with NO msg/config
     blocks = blocks.concat({
       type: 'header',
       text: {
