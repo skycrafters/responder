@@ -8,10 +8,10 @@ flows:
       - command: SendSlack
         template: aws-event
       - command: SendEmail
-      - command: SendSlack
-        message: I will wait 10 seconds and take action if none 
       - command: SendDiscord
         message: I will wait 10 seconds and take action if none taken 
+      - command: SendSlack
+        message: I will wait 10 seconds and take action if none taken
       - command: Wait
         duration: 10
       - rule: check

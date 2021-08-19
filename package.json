@@ -21,7 +21,6 @@
   "dependencies": {
     "@slack/webhook": "^5.0.3",
     "bluebird": "^3.7.2",
-    "discord-webhook-node": "^1.1.8",
     "handlebars": "^4.7.7",
     "ip-range-check": "^0.2.0",
     "js-yaml": "^4.0.0",
