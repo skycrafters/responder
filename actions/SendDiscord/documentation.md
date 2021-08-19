@@ -4,15 +4,15 @@
 This action aims to create an easy way to [format](https://birdie0.github.io/discord-webhooks-guide/discord_webhook.html) and send alerts as Discord messages.
 
 ## Quick Links
-[configuration](#configuration)
+[Initial setup](#configuration)
 
-[testing](#testing)
+[Testing](#testing)
 
-[usage](#usage)
+[Usage](#usage)
 
-[examples](#usage-examples)
+[Examples](#usage-examples)
 
-[templating](#templating)
+[Templating](#templating)
 
 <p>&nbsp;</p>
 
