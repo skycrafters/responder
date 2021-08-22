@@ -22,7 +22,7 @@ This action aims to create an easy way to [format](https://birdie0.github.io/dis
 
   
 
-2. Now that you've setup webhooks on your discord channel, navigate to `config-default.yml` in the /actions/SendDiscord/ directory of this repository. In that file, replace the value of `webhookURL` from the 'place-holder URL' to the actual webhook URL that you received when you enabled webhooks on your discord channel.
+2. Now that you've setup webhooks on your discord channel, navigate to `config-default.yml` in the /actions/SendDiscord/ directory. In that file, replace the value of `webhookURL` from the 'place-holder URL' to the actual webhook URL that you received when you enabled webhooks on your discord channel.
 
   
 

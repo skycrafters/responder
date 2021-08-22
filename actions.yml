@@ -38,26 +38,20 @@ flows:
     sequential:
       - command: SendSlack
         template: aws-event
-        # adding discord
       - command: SendDiscord
         template: aws-event
-        # adding discord
       - command: SendEmail
       - command: SendSlack
         message: I will wait 2 minutes and take action if none taken
-        # adding discord
       - command: SendDiscord
         message: I will wait 2 minutes and take action if none taken
-        # adding discord 
       - command: Wait
         duration: 120
       - rule: check
       - command: SendSlack
         message: Will terminate instances
-        # adding discord
       - command: SendDiscord
         message: Will terminate instances
-        # adding discord
       - rule: remediate
 
   - rule: SuspiciousLoginHour
