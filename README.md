@@ -1,12 +1,21 @@
 # Responder
 
-The Responder aims to listen to multiple event sources and provides a simple way to determine how to respond to them.
+**Responder** aims to listen to multiple event sources and provides a simple way to determine how to respond to them. 
+<!-- -install aws cli + configure
+-serverless + configure
+-make sure you have enabled cloudtrail (in your aws account)
+-go to actions folder and adjust the config-default files so that they contain YOUR info. (your email, your slack webhook address etc..)
+-npm run deploy -->
 
-### Local set up
+### Local AWS set up
 
-Make sure the current CLI profile is set up with admin priviledges to your target AWS account.
+1. Clone this repository locally to your machine.
 
-Clone this repository locally to your machine.
+2. To use **Responder**, you must have the AWS CLI installed. For information on how to install the AWS CLI check out [Installing, updating, and uninstalling the AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-install.html). Once the CLI is installed, make sure to configure your CLI profile with admin priviledges to your target AWS account. For more information on configuring your profile check out [Configuring the AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-configure.html)
+
+3. 
+
+
 
 Install the [Serverless Framework](https://github.com/serverless/serverless#readme) globally
 
@@ -51,6 +60,7 @@ This will:
 - Create APIKey in SecretsManager in us-east-1 and its replicas in all enabled regions, this key will be used to secure the events that are sent from various regions to the Cloud Responder (installed in us-east-1)
 - Deploy the Serverless Cloud Responder application in us-east-1
 - Deploy this EventBridge [CloudFormation template](aws-eventbridge.yml) into every region
+- Update your deployment with any changes that were made to your integrations 
 
 ### Remove
 
@@ -88,5 +98,15 @@ A flow sequence will start when a finding has been discoverd, it a series of act
 [Capture events](capture-events.md)
 
 # Actions
-
+[Send Discord](actions/SendDiscord/documentation.md)
 [Send Slack](actions/SendSlack/documentation.md)
+
+
+## Testing your configuration
+You might want to test **Responder** to make sure all of your alerts are set up, [configured](#usage) , and arriving as expected. This can be done locally which will save you from having to re-deploy **Responder** every single time you want to change/test a configuration. 
+To do this just cd to the main directory, and run the index.js file with node. 
+```
+	node index.js
+```
+
+<p>&nbsp;</p>
