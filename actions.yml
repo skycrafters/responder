@@ -17,7 +17,7 @@ flows:
           values:
             - label: "Removing user"
               value: "$.event.rawEvent.detail.requestParameters.userName"
-      - rule: remediate
+      - rule: remediate      
       - command: SendSlack
         message: "Non-compliant user removed"
 
