@@ -3,33 +3,21 @@ flows:
     provider: AWS
     enabled: true
     sequential:
-      - command: SendDiscord
-        template: aws-event
       - command: SendSlack
         template: aws-event
       - command: SendEmail
-      - command: SendDiscord
-        message: I will wait 10 seconds and take action if none taken 
       - command: SendSlack
         message: I will wait 10 seconds and take action if none taken
       - command: Wait
         duration: 1
       - rule: check
-      - command: SendDiscord
-        message:
-          header: "Will remove non-compliant user"
-          values:
-            - label: "Removing user"
-              value: "$.event.rawEvent.detail.requestParameters.userName" 
       - command: SendSlack
         message:
           header: "Will remove non-compliant user"
           values:
             - label: "Removing user"
               value: "$.event.rawEvent.detail.requestParameters.userName"
-      - rule: remediate
-      - command: SendDiscord
-        message: "Non-compliant user removed"      
+      - rule: remediate      
       - command: SendSlack
         message: "Non-compliant user removed"
 
@@ -38,19 +26,13 @@ flows:
     sequential:
       - command: SendSlack
         template: aws-event
-      - command: SendDiscord
-        template: aws-event
       - command: SendEmail
       - command: SendSlack
-        message: I will wait 2 minutes and take action if none taken
-      - command: SendDiscord
         message: I will wait 2 minutes and take action if none taken
       - command: Wait
         duration: 1
       - rule: check
       - command: SendSlack
-        message: Will terminate instances
-      - command: SendDiscord
         message: Will terminate instances
       - rule: remediate
 
@@ -59,11 +41,6 @@ flows:
     parallel:
       - command: SendSlack
         template: aws-event
-        # adding discord
-      - command: SendDiscord
-        message: Log in at Suspicious Hour Detected
-        template: aws-event  
-        # adding discord
       - command: SendEmail
 
   - rule: SuspiciousLoginIP
@@ -72,9 +49,6 @@ flows:
     parallel:
       - command: SendSlack
         template: aws-event
-      - command: SendDiscord
-        message: Log in from Suspicious IP Detected
-        template: aws-event  
       - command: SendEmail
 
   - rule: RootLogin
@@ -83,14 +57,6 @@ flows:
     parallel:
       - command: SendSlack
         message:
-          header: "Root has logged in"
-          values:
-            - label: "Account"
-              value: "$.event.rawEvent.account"
-            - label: "From"
-              value: "$.event.rawEvent.detail.sourceIPAddress"
-      - command: SendDiscord
-        message: 
           header: "Root has logged in"
           values:
             - label: "Account"
