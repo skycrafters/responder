@@ -1,0 +1,2 @@
+## Placeholder/Temp Google Chat Webhook URL
+webhookURL: "https://chat.googleapis.com/v1/spaces/{API_TOKEN}/messages?key={API_KEY}"
