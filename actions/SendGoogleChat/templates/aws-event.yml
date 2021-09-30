@@ -1,35 +1,25 @@
 cards:
 - header:
-    title: Responder Bot
+    title: <b>{{finding.ruleTitle}}</B>
     imageUrl: https://i.ibb.co/LSd4Fhf/TEXT-RED.png
   sections:
   - widgets:
     - textParagraph:
-        text: "<b>{{finding.ruleTitle}}<b/>"
-    - textParagraph:
-        text: "{{finding.message}}"
-  - widgets:
-    - keyValue:
-        topLabel: Severity
-        content: "{{finding.prettySeverity}}"
-    - keyValue:
-        topLabel: Account
-        content: "{{flow.event.account}}"
-  - widgets:
-    - keyValue:
-        topLabel: Region
-        content: "{{flow.event.region}}"
-    - keyValue:
-        topLabel: IP address
-        content: "{{flow.event.initiatingIP}}"
-  - widgets:
-    - keyValue:
-        topLabel: Initiating user
-        content: "{{flow.event.initiator}}"
-    - keyValue:
-        topLabel: Resources
-        content: "{{#if finding.resources}}
+        text: "
+        <b/>Severity<b/>: {{finding.prettySeverity}}\n
+        <b>Account<b/>: {{flow.event.account}}\n
+        <b>Region<b/>: {{flow.event.region}}\n
+        <b>IP address<b/>: {{flow.event.initiatingIP}}\n
+        <b>Triggered<b/>: {{finding.delay}} seconds ago\n
+        <b>Initiating user<b/>: {{flow.event.initiator}}\n
+        {{#if finding.resources}}
+          <b>Resources</b>:
           {{#each finding.resources}}
             {{this}}
           {{/each}}
-        {{/if}}"
+        {{/if}}
+        "
+    - image:
+        imageUrl: https://previews.123rf.com/images/chekman/chekman1710/chekman171000063/87685776-warning-danger-sign-vector-illustration-warning-square-sign-with-exclamation-mark-.jpg
+
+ 
