@@ -6,10 +6,10 @@ trigger:
   - path: $.detail.eventName
     value: RunInstances
 severity: HIGH
-whiteListedInstances:
+allowedInstances:
   - t3a\.(.*)
   - c6g.medium
-blackListedInstances:
+deniedInstances:
   - t2\.(.*)
   - (.*)\.8xlarge
   - (.*)\.12xlarge
