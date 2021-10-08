@@ -73,13 +73,13 @@ rule.remediate = async (action, flow) => {
 module.exports = rule;
 
 const isValid = (instanceType, configuration) => {
-	const isInvalidInstance = configuration.blackListedInstances.find((rule) => {
+	const isInvalidInstance = configuration.deniedInstances.find((rule) => {
 		return instanceType.match(rule);
 	});
 	if (isInvalidInstance) {
 		return false;
 	}
-	const isValidInstance = configuration.whiteListedInstances.find((rule) => {
+	const isValidInstance = configuration.allowedInstances.find((rule) => {
 		return instanceType.match(rule);
 	});
 	if (isValidInstance) {
